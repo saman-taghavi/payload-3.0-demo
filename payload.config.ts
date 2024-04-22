@@ -1,6 +1,6 @@
-import path from 'path'
-// import { postgresAdapter } from '@payloadcms/db-postgres'
-import { en } from 'payload/i18n/en'
+import path from "path"
+import { postgresAdapter } from '@payloadcms/db-postgres'
+import { en } from "payload/i18n/en"
 import {
   AlignFeature,
   BlockQuoteFeature,
@@ -18,12 +18,12 @@ import {
   RelationshipFeature,
   UnorderedListFeature,
   UploadFeature,
-} from '@payloadcms/richtext-lexical'
+} from "@payloadcms/richtext-lexical"
 //import { slateEditor } from '@payloadcms/richtext-slate'
-import { mongooseAdapter } from '@payloadcms/db-mongodb'
-import { buildConfig } from 'payload/config'
-import sharp from 'sharp'
-import { fileURLToPath } from 'url'
+// import { mongooseAdapter } from "@payloadcms/db-mongodb"
+import { buildConfig } from "payload/config"
+import sharp from "sharp"
+import { fileURLToPath } from "url"
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -33,7 +33,7 @@ export default buildConfig({
   editor: lexicalEditor(),
   collections: [
     {
-      slug: 'users',
+      slug: "users",
       auth: true,
       access: {
         delete: () => false,
@@ -42,44 +42,44 @@ export default buildConfig({
       fields: [],
     },
     {
-      slug: 'pages',
+      slug: "pages",
       admin: {
-        useAsTitle: 'title',
+        useAsTitle: "title",
       },
       fields: [
         {
-          name: 'title',
-          type: 'text',
+          name: "title",
+          type: "text",
         },
         {
-          name: 'content',
-          type: 'richText',
+          name: "content",
+          type: "richText",
         },
       ],
     },
     {
-      slug: 'media',
+      slug: "media",
       upload: true,
       fields: [
         {
-          name: 'text',
-          type: 'text',
+          name: "text",
+          type: "text",
         },
       ],
     },
   ],
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
-    outputFile: path.resolve(dirname, 'payload-types.ts'),
+    outputFile: path.resolve(dirname, "payload-types.ts"),
   },
-  // db: postgresAdapter({
-  //   pool: {
-  //     connectionString: process.env.POSTGRES_URI || ''
-  //   }
-  // }),
-  db: mongooseAdapter({
-    url: process.env.MONGODB_URI || '',
+  db: postgresAdapter({
+    pool: {
+      connectionString: process.env.POSTGRES_URI || ''
+    }
   }),
+  // db: mongooseAdapter({
+  //   url: process.env.MONGODB_URI || "",
+  // }),
 
   /**
    * Payload can now accept specific translations from 'payload/i18n/en'
@@ -91,23 +91,23 @@ export default buildConfig({
 
   admin: {
     autoLogin: {
-      email: 'dev@payloadcms.com',
-      password: 'test',
+      email: "dev@payloadcms.com",
+      password: "test",
       prefillOnly: true,
     },
   },
   async onInit(payload) {
     const existingUsers = await payload.find({
-      collection: 'users',
+      collection: "users",
       limit: 1,
     })
 
     if (existingUsers.docs.length === 0) {
       await payload.create({
-        collection: 'users',
+        collection: "users",
         data: {
-          email: 'dev@payloadcms.com',
-          password: 'test',
+          email: "dev@payloadcms.com",
+          password: "test",
         },
       })
     }
