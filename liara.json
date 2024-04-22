@@ -1,0 +1,7 @@
+{
+  "platform": "next",
+  "app": "lingo-plus",
+  "next": {
+    "modifyConfig": false
+  }
+}
