@@ -8,6 +8,7 @@ WORKDIR /app
 RUN corepack enable pnpm
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+RUN npm config set registry "https://repo.ito.gov.ir/npm/"
 RUN pnpm i 
 
 # Rebuild the source code only when needed
