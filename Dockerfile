@@ -9,7 +9,7 @@ RUN corepack enable pnpm
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 RUN npm config set registry "https://repo.ito.gov.ir/npm/"
-RUN pnpm i 
+RUN npm i 
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -29,7 +29,7 @@ ARG POSTGRES_URI
 ENV BASE_URL=$POSTGRES_URI
 
 RUN corepack enable pnpm
-RUN pnpm run build
+RUN npm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
