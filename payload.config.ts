@@ -1,5 +1,5 @@
 import path from "path"
-import { postgresAdapter } from '@payloadcms/db-postgres'
+import { postgresAdapter } from "@payloadcms/db-postgres"
 import { en } from "payload/i18n/en"
 import {
   AlignFeature,
@@ -74,8 +74,8 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.POSTGRES_URI || ''
-    }
+      connectionString: process.env.POSTGRES_URI || "",
+    },
   }),
   // db: mongooseAdapter({
   //   url: process.env.MONGODB_URI || "",
@@ -90,11 +90,14 @@ export default buildConfig({
   },
 
   admin: {
-    autoLogin: {
-      email: "dev@payloadcms.com",
-      password: "test",
-      prefillOnly: true,
-    },
+    autoLogin:
+      process.env.environment === "production"
+        ? {
+            email: "dev@payloadcms.com",
+            password: "test",
+            prefillOnly: true,
+          }
+        : false,
   },
   async onInit(payload) {
     const existingUsers = await payload.find({
