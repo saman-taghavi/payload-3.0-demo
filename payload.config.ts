@@ -6,7 +6,6 @@ import {
   BlockQuoteFeature,
   BlocksFeature,
   BoldFeature,
-  CheckListFeature,
   HeadingFeature,
   IndentFeature,
   InlineCodeFeature,
@@ -18,8 +17,13 @@ import {
   RelationshipFeature,
   UnorderedListFeature,
   UploadFeature,
+  ChecklistFeature,
+  HTMLConverterFeature,
+  sortFeaturesForOptimalLoading,
+  loadFeatures,
+  lexicalHTML,
 } from "@payloadcms/richtext-lexical"
-import { slateEditor } from "@payloadcms/richtext-slate"
+// import { slateEditor } from "@payloadcms/richtext-slate"
 // import { mongooseAdapter } from "@payloadcms/db-mongodb"
 import { buildConfig } from "payload/config"
 import sharp from "sharp"
@@ -30,7 +34,27 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  editor: slateEditor({}),
+  editor: lexicalEditor({
+    features({ defaultFeatures }) {
+      return [
+        AlignFeature(),
+        BlockQuoteFeature(),
+        BoldFeature(),
+        HeadingFeature(),
+        IndentFeature(),
+        InlineCodeFeature(),
+        ItalicFeature(),
+        LinkFeature(),
+        OrderedListFeature(),
+        ParagraphFeature(),
+        RelationshipFeature(),
+        UnorderedListFeature(),
+        UploadFeature(),
+        ChecklistFeature(),
+        HTMLConverterFeature(),
+      ]
+    },
+  }),
   collections: [
     {
       slug: "users",
@@ -55,6 +79,7 @@ export default buildConfig({
           name: "content",
           type: "richText",
         },
+        lexicalHTML("content", { name: "contentHtml" }),
       ],
     },
     {
@@ -124,10 +149,10 @@ export default buildConfig({
   sharp,
   plugins: [
     seoPlugin({
+      tabbedUI: true,
       collections: ["pages"],
       uploadsCollection: "media",
-      tabbedUI: true,
-      interfaceName: "seo | saman",
+
       generateTitle(props) {
         return `lingo+ | ${props.title} | blog`
       },
