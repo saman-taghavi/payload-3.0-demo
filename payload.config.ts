@@ -24,6 +24,7 @@ import { slateEditor } from "@payloadcms/richtext-slate"
 import { buildConfig } from "payload/config"
 import sharp from "sharp"
 import { fileURLToPath } from "url"
+import { seoPlugin } from "@payloadcms/plugin-seo"
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -121,4 +122,15 @@ export default buildConfig({
   // This is temporary - we may make an adapter pattern
   // for this before reaching 3.0 stable
   sharp,
+  plugins: [
+    seoPlugin({
+      collections: ["pages"],
+      uploadsCollection: "media",
+      tabbedUI: true,
+      interfaceName: "seo | saman",
+      generateTitle(props) {
+        return `lingo+ | ${props.title} | blog`
+      },
+    }),
+  ],
 })
