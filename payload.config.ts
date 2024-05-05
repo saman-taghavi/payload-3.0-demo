@@ -29,6 +29,8 @@ import { buildConfig } from "payload/config"
 import sharp from "sharp"
 import { fileURLToPath } from "url"
 import { seoPlugin } from "@payloadcms/plugin-seo"
+import { nodemailerAdapter } from "@payloadcms/email-nodemailer"
+import nodemailer from "nodemailer"
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -158,4 +160,17 @@ export default buildConfig({
       },
     }),
   ],
+  email: nodemailerAdapter({
+    defaultFromAddress: "info@lmail.lingo-plus.ir",
+    defaultFromName: "lingo+",
+    // Any Nodemailer transport
+    transport: await nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: 587,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    }),
+  }),
 })
